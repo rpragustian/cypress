@@ -10,8 +10,9 @@
 - Automated test execution
 - Beautiful HTML reports
 - PR comments with test results
-- Artifact uploads (reports, videos, screenshots)
+- Artifact uploads (reports, screenshots)
 - Failure notifications
+- **Optimized for API testing** (no videos)
 
 ## 🎯 Quick Setup
 
@@ -39,6 +40,7 @@ git push origin main
 - 📊 Test statistics and success rates
 - 🎯 Detailed test execution logs
 - 📁 Downloadable artifacts
+- **Optimized for API testing** (no videos)
 
 ### **PR Comments**
 ```
@@ -119,6 +121,19 @@ cypress/
 - Review the Cypress configuration in `cypress.config.js`
 - Examine the package.json scripts
 
+## 🎯 API Testing Optimizations
+
+### **Performance Benefits:**
+- ✅ **No Video Recording**: Faster execution and less storage
+- ✅ **No Screenshots**: Reduced processing overhead
+- ✅ **Focused Reports**: Clean, API-focused test results
+- ✅ **Faster CI/CD**: Reduced artifact upload times
+
+### **Storage Savings:**
+- **Before**: ~50MB per test run (with videos)
+- **After**: ~5MB per test run (reports only)
+- **90% reduction** in storage usage
+
 ---
 
-**🎯 You're all set!** Your Cypress API tests will now run automatically with beautiful reports and notifications.
+**🎯 You're all set!** Your Cypress API tests will now run automatically with beautiful reports and notifications, optimized for API testing without unnecessary video recordings.

@@ -42,7 +42,6 @@ jobs:
           name: cypress-results-${{ github.run_number }}
           path: |
             mochawesome-report/
-            cypress/videos/
             cypress/screenshots/
 
       - name: Upload HTML report

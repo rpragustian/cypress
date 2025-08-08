@@ -16,9 +16,9 @@ module.exports = defineConfig({
     // Increase timeout for API calls
     defaultCommandTimeout: 10000,
     requestTimeout: 10000,
-    // Configure for CI/CD
-    video: true,
-    screenshotOnRunFailure: true,
+    // Configure for CI/CD - Disable videos for API testing
+    video: false,
+    screenshotOnRunFailure: false, // Also disable screenshots for API testing
     trashAssetsBeforeRuns: true,
     // Mochawesome configuration
     reporter: 'mochawesome',
@@ -30,7 +30,7 @@ module.exports = defineConfig({
         json: true,
         reportTitle: 'Cypress API Testing Report',
         reportPageTitle: 'API Test Results',
-        embeddedScreenshots: true,
+        embeddedScreenshots: false, // Disable embedded screenshots for API testing
         inlineAssets: true,
         saveAllAttempts: false,
         code: true,

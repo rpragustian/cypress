@@ -10,8 +10,9 @@ This repository includes comprehensive GitHub Actions workflows for automated AP
   - ✅ Mochawesome HTML reports
   - 📊 Test statistics and success rates
   - 💬 Automatic PR comments with results
-  - 📁 Artifact uploads (reports, videos, screenshots)
+  - 📁 Artifact uploads (reports, screenshots)
   - 🔔 Failure notifications
+  - 🎯 Optimized for API testing (no videos)
 
 ### 2. **Cypress API Tests with Allure** (`.github/workflows/cypress-allure.yml`)
 - **Trigger**: Push to `main`/`develop`, Pull Requests, Manual dispatch
@@ -21,6 +22,7 @@ This repository includes comprehensive GitHub Actions workflows for automated AP
   - 📊 Test metrics and trends
   - 🎯 Failure analysis
   - 📁 Allure results and report artifacts
+  - 🎯 Optimized for API testing (no videos)
 
 ## 🚀 How to Use
 
@@ -44,8 +46,8 @@ The workflows automatically run on:
   - Test execution summary
   - Pass/fail statistics
   - Test duration metrics
-  - Screenshots and videos
   - Code coverage (if configured)
+  - **Optimized for API testing** (no videos/screenshots)
 
 ### Allure Reports
 - **Location**: `allure-report/`
@@ -104,12 +106,19 @@ The workflows automatically install:
 - `@shelex/cypress-allure-plugin` (for Allure reports)
 - `allure-commandline` (for Allure report generation)
 
+### API Testing Optimizations
+- **Videos Disabled**: No video recording for faster execution
+- **Screenshots Disabled**: No screenshot capture for API tests
+- **Faster Execution**: Reduced storage and processing overhead
+- **Focused Reports**: Clean, API-focused test results
+
 ## 📁 Artifacts
 
 ### Available Artifacts
 1. **cypress-results-{run_number}**
-   - Contains: mochawesome-report, videos, screenshots
+   - Contains: reports, screenshots
    - Retention: 90 days
+   - **Note**: No videos (optimized for API testing)
 
 2. **cypress-html-report-{run_number}**
    - Contains: Mochawesome HTML report
@@ -187,6 +196,7 @@ npm run allure:serve
 - **Parallel Execution**: Tests run in parallel when possible
 - **Caching**: npm dependencies are cached
 - **Artifact Management**: Automatic cleanup of old artifacts
+- **API-Focused**: No video/screenshot overhead
 
 ## 🔐 Security Considerations
 
