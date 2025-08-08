@@ -4,6 +4,17 @@ This repository is configured for API testing with Cypress using the [ReqRes](ht
 
 ---
 
+## 📚 Documentation
+
+All documentation is organized in the [`docs/`](./docs/) folder:
+
+- **[📖 Documentation Index](./docs/README.md)** - Complete documentation overview
+- **[🚀 Quick Start Guide](./docs/QUICK_START.md)** - Get up and running quickly
+- **[🤖 GitHub Actions Setup](./docs/GITHUB_ACTIONS.md)** - CI/CD configuration guide
+- **[🛠️ Troubleshooting Guide](./docs/TROUBLESHOOTING.md)** - Common issues and solutions
+
+---
+
 ## Configuration
 
 - **Cypress config**: `cypress.config.js`
@@ -18,19 +29,19 @@ This repository is configured for API testing with Cypress using the [ReqRes](ht
 
 ```
 cypress/
-├── e2e/                  # Test files
-├── integration/
-│   ├── api/              # Modular API methods (e.g., userApi.js, authApi.js)
-│   └── schemas/          # Modular JSON schemas (e.g., userSchema.js)
-├── support/              # Cypress support files
-├── mochawesome-report/   # Generated HTML reports
-└── cypress.config.js     # Cypress configuration
-
-scripts/
-└── reports/              # Report generation scripts
-    ├── generate-report.js # Main comprehensive report generator
-    ├── quick-test.js     # Quick test runner
-    └── README.md         # Script documentation
+├── docs/                          # 📚 Documentation
+│   ├── README.md                  # Documentation index
+│   ├── QUICK_START.md            # Quick start guide
+│   ├── GITHUB_ACTIONS.md         # CI/CD setup guide
+│   ├── TROUBLESHOOTING.md        # Troubleshooting guide
+│   └── SOLUTION_BLANK_HTML_REPORTS.md # HTML reports fix
+├── cypress/                       # 🧪 Test files
+│   ├── e2e/                      # End-to-end tests
+│   ├── integration/               # API methods & schemas
+│   └── support/                   # Support files
+├── scripts/                       # 🔧 Utility scripts
+├── .github/                       # 🤖 GitHub Actions
+└── README.md                      # Main project README
 ```
 
 ---

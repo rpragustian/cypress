@@ -9,7 +9,8 @@
     "test": "node scripts/reports/generate-report.js",
     "test:quick": "node scripts/reports/quick-test.js",
     "test:ci": "npm run test",
-    "test:github": "npm run test"
+    "test:github": "npm run test",
+    "test:reports": "node scripts/test-reports.js"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

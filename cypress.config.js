@@ -15,7 +15,7 @@ module.exports = defineConfig({
     video: false,
     screenshotOnRunFailure: false, // Also disable screenshots for API testing
     trashAssetsBeforeRuns: true,
-    // Mochawesome configuration
+    // Mochawesome configuration - optimized for CI
     reporter: 'mochawesome',
     reporterOptions: {
       mochawesome: {
@@ -33,7 +33,13 @@ module.exports = defineConfig({
         quiet: false,
         displayDuration: true,
         duration: true,
-        timestamp: true
+        timestamp: true,
+        // Additional settings for better CI compatibility
+        reportFilename: 'mochawesome',
+        saveHtml: true,
+        saveJson: true,
+        consoleReporter: 'spec',
+        useInlineDiffs: false
       }
     }
   },
@@ -41,4 +47,15 @@ module.exports = defineConfig({
   env: {
     apiBaseUrl: "https://reqres.in/api",
   },
+  // Additional CI-specific settings
+  retries: {
+    runMode: 0, // No retries in CI
+    openMode: 0
+  },
+  // Ensure proper file handling in CI
+  trashAssetsBeforeRuns: true,
+  // Disable video recording for faster execution
+  video: false,
+  // Disable screenshots for API testing
+  screenshotOnRunFailure: false
 });
