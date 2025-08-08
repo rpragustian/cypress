@@ -1,0 +1,39 @@
+{
+  "name": "cypress-api-testing",
+  "version": "1.0.0",
+  "description": "Cypress API Testing with JSON Schema Validation",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:reports": "cypress run --reporter mochawesome",
+    "cypress:run:allure": "cypress run --env allure=true",
+    "generate:reports": "npm run cypress:run:reports && npx mochawesome-merge mochawesome-report/*.json > mochawesome-report/output.json && npx marge mochawesome-report/output.json -f report -o mochawesome-report",
+    "generate:allure": "npm run cypress:run:allure && npm run allure:generate",
+    "allure:generate": "allure generate cypress/allure-results --clean",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve cypress/allure-results",
+    "test:ci": "npm run generate:reports",
+    "test:ci:allure": "npm run generate:allure",
+    "test:github": "npm run cypress:run:reports && npx mochawesome-merge mochawesome-report/*.json > mochawesome-report/output.json && npx marge mochawesome-report/output.json -f report -o mochawesome-report"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "chai-json-schema-ajv": "^5.2.4",
+    "cypress": "^14.5.4",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0",
+    "@shelex/cypress-allure-plugin": "^2.0.0",
+    "allure-commandline": "^2.27.0"
+  },
+  "keywords": [
+    "cypress",
+    "api-testing",
+    "json-schema",
+    "automation",
+    "testing"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

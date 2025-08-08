@@ -1,0 +1,80 @@
+name: Cypress API Tests with Allure
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  cypress-allure:
+    runs-on: ubuntu-latest
+    name: Run API Tests with Allure
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Cypress and Allure
+        run: |
+          npm install cypress --save-dev
+          npm install @shelex/cypress-allure-plugin allure-commandline --save-dev
+
+      - name: Run Cypress tests with Allure
+        run: npm run cypress:run:allure
+
+      - name: Generate Allure report
+        run: npm run allure:generate
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-${{ github.run_number }}
+          path: cypress/allure-results/
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report-${{ github.run_number }}
+          path: allure-report/
+
+      - name: Comment PR with Allure results
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request' && always()
+        with:
+          script: |
+            const comment = `## 📊 Allure Test Report
+            
+            **Test Results:**
+            - 📋 [View Allure Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - 📁 [Download Allure Results](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            **Features:**
+            - 📈 Interactive test reports
+            - 🔍 Detailed test execution logs
+            - 📊 Test metrics and trends
+            - 🎯 Failure analysis
+            
+            To view the report locally:
+            \`\`\`bash
+            # Download the allure-results artifact
+            # Then run: allure serve allure-results
+            \`\`\``;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
