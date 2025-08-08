@@ -25,6 +25,12 @@ cypress/
 ├── support/              # Cypress support files
 ├── mochawesome-report/   # Generated HTML reports
 └── cypress.config.js     # Cypress configuration
+
+scripts/
+└── reports/              # Report generation scripts
+    ├── generate-report.js # Main comprehensive report generator
+    ├── quick-test.js     # Quick test runner
+    └── README.md         # Script documentation
 ```
 
 ---
@@ -92,19 +98,28 @@ describe('User API', () => {
 
 ## Running the Tests
 
-Run all tests:
+### Quick Test Run (Recommended for Development)
 ```bash
-npx cypress run
+npm run test:quick
 ```
+Fast execution with default Cypress reporter - good for development and debugging.
 
-Run a specific test file:
+### Comprehensive Test Run (Recommended for Reports)
 ```bash
+npm run test
+```
+Runs all test files individually and generates a comprehensive HTML report with all 33 test scenarios.
+
+### Other Commands
+```bash
+# Open Cypress Test Runner
+npm run cypress:open
+
+# Run all tests in headless mode
+npm run cypress:run
+
+# Run a specific test file
 npx cypress run --spec "cypress/e2e/simple-api-example.cy.js"
-```
-
-Open Cypress Test Runner:
-```bash
-npx cypress open
 ```
 
 ---

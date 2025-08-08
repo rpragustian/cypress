@@ -6,9 +6,10 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:run:reports": "cypress run --reporter mochawesome",
-    "generate:reports": "npm run cypress:run:reports && npx mochawesome-merge mochawesome-report/*.json > mochawesome-report/output.json && npx marge mochawesome-report/output.json -f report -o mochawesome-report",
-    "test:ci": "npm run generate:reports",
-    "test:github": "npm run cypress:run:reports && npx mochawesome-merge mochawesome-report/*.json > mochawesome-report/output.json && npx marge mochawesome-report/output.json -f report -o mochawesome-report"
+    "test": "node scripts/reports/generate-report.js",
+    "test:quick": "node scripts/reports/quick-test.js",
+    "test:ci": "npm run test",
+    "test:github": "npm run test"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

@@ -21,7 +21,7 @@ module.exports = defineConfig({
       mochawesome: {
         outputDir: 'mochawesome-report',
         overwrite: false,
-        html: true,
+        html: false,
         json: true,
         reportTitle: 'Cypress API Testing Report',
         reportPageTitle: 'API Test Results',
