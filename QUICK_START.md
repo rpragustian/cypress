@@ -2,9 +2,8 @@
 
 ## 📋 What's Included
 
-✅ **Two GitHub Actions Workflows:**
+✅ **GitHub Actions Workflow:**
 - `cypress-api-tests.yml` - Mochawesome HTML reports
-- `cypress-allure.yml` - Interactive Allure reports
 
 ✅ **Complete Setup:**
 - Automated test execution
@@ -26,7 +25,7 @@ git push origin main
 ### 2. **Check Actions Tab**
 - Go to your repository on GitHub
 - Click the **Actions** tab
-- You should see the workflows running automatically
+- You should see the workflow running automatically
 
 ### 3. **View Results**
 - **Reports**: Download artifacts from the Actions tab
@@ -86,8 +85,7 @@ open mochawesome-report/report.html
 ```
 cypress/
 ├── .github/workflows/
-│   ├── cypress-api-tests.yml      # Main workflow
-│   └── cypress-allure.yml         # Allure workflow
+│   └── cypress-api-tests.yml      # Main workflow
 ├── e2e/                           # Test files
 ├── integration/                   # API methods & schemas
 │   ├── api/                      # Modular API methods
@@ -99,7 +97,7 @@ cypress/
 
 ## 🎉 Next Steps
 
-1. **Customize Workflows**: Modify triggers, branches, or add environment variables
+1. **Customize Workflow**: Modify triggers, branches, or add environment variables
 2. **Add More Tests**: Create additional test files in `cypress/e2e/`
 3. **Configure Notifications**: Set up Slack, email, or other notification channels
 4. **Monitor Performance**: Track test execution times and success rates
@@ -136,4 +134,4 @@ cypress/
 
 ---
 
-**🎯 You're all set!** Your Cypress API tests will now run automatically with beautiful reports and notifications, optimized for API testing without unnecessary video recordings.
+**🎯 You're all set!** Your Cypress API tests will now run automatically with beautiful Mochawesome reports and notifications, optimized for API testing without unnecessary video recordings.

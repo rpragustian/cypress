@@ -1,10 +1,10 @@
 # GitHub Actions Setup for Cypress API Testing
 
-This repository includes comprehensive GitHub Actions workflows for automated API testing with Cypress.
+This repository includes a comprehensive GitHub Actions workflow for automated API testing with Cypress using Mochawesome reports.
 
-## 📋 Available Workflows
+## 📋 Available Workflow
 
-### 1. **Cypress API Tests** (`.github/workflows/cypress-api-tests.yml`)
+### **Cypress API Tests** (`.github/workflows/cypress-api-tests.yml`)
 - **Trigger**: Push to `main`/`develop`, Pull Requests, Manual dispatch
 - **Features**:
   - ✅ Mochawesome HTML reports
@@ -14,27 +14,17 @@ This repository includes comprehensive GitHub Actions workflows for automated AP
   - 🔔 Failure notifications
   - 🎯 Optimized for API testing (no videos)
 
-### 2. **Cypress API Tests with Allure** (`.github/workflows/cypress-allure.yml`)
-- **Trigger**: Push to `main`/`develop`, Pull Requests, Manual dispatch
-- **Features**:
-  - 📈 Interactive Allure reports
-  - 🔍 Detailed test execution logs
-  - 📊 Test metrics and trends
-  - 🎯 Failure analysis
-  - 📁 Allure results and report artifacts
-  - 🎯 Optimized for API testing (no videos)
-
 ## 🚀 How to Use
 
 ### Automatic Triggers
-The workflows automatically run on:
+The workflow automatically runs on:
 - **Push** to `main` or `develop` branches
 - **Pull Requests** to `main` or `develop` branches
 - **Manual dispatch** via GitHub Actions tab
 
 ### Manual Execution
 1. Go to **Actions** tab in your repository
-2. Select the desired workflow
+2. Select the **Cypress API Tests** workflow
 3. Click **Run workflow**
 4. Choose branch and click **Run workflow**
 
@@ -48,15 +38,6 @@ The workflows automatically run on:
   - Test duration metrics
   - Code coverage (if configured)
   - **Optimized for API testing** (no videos/screenshots)
-
-### Allure Reports
-- **Location**: `allure-report/`
-- **Features**:
-  - Interactive dashboard
-  - Test trends and metrics
-  - Detailed failure analysis
-  - Test execution timeline
-  - Environment information
 
 ## 💬 PR Comments
 
@@ -94,17 +75,17 @@ Some API tests have failed. Please check the [test results](https://github.com/u
 ## 🔧 Configuration
 
 ### Environment Variables
-The workflows use the following environment setup:
+The workflow uses the following environment setup:
 - **Node.js**: 18.x
 - **Cypress**: Latest version
 - **Cache**: npm dependencies
 
 ### Dependencies
-The workflows automatically install:
+The workflow automatically installs:
 - `cypress`
 - `mochawesome` (for HTML reports)
-- `@shelex/cypress-allure-plugin` (for Allure reports)
-- `allure-commandline` (for Allure report generation)
+- `mochawesome-merge` (for merging reports)
+- `mochawesome-report-generator` (for report generation)
 
 ### API Testing Optimizations
 - **Videos Disabled**: No video recording for faster execution
@@ -124,14 +105,6 @@ The workflows automatically install:
    - Contains: Mochawesome HTML report
    - Retention: 90 days
 
-3. **allure-results-{run_number}**
-   - Contains: Allure test results
-   - Retention: 90 days
-
-4. **allure-report-{run_number}**
-   - Contains: Generated Allure report
-   - Retention: 90 days
-
 ## 🛠️ Local Development
 
 ### Running Tests Locally
@@ -142,21 +115,14 @@ npm install
 # Run tests with Mochawesome reports
 npm run cypress:run:reports
 
-# Run tests with Allure reports
-npm run cypress:run:allure
-
 # Generate reports
 npm run generate:reports
-npm run generate:allure
 ```
 
 ### Viewing Reports Locally
 ```bash
 # Open Mochawesome report
 open mochawesome-report/report.html
-
-# Serve Allure report
-npm run allure:serve
 ```
 
 ## 🔍 Troubleshooting
@@ -217,7 +183,6 @@ If you need to add sensitive data:
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Cypress CI/CD Guide](https://docs.cypress.io/guides/continuous-integration/introduction)
 - [Mochawesome Documentation](https://github.com/adamgruber/mochawesome)
-- [Allure Framework Documentation](https://docs.qameta.io/allure/)
 
 ---
 

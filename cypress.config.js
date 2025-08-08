@@ -4,11 +4,6 @@ module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
-      
-      // Configure Allure plugin if enabled
-      if (config.env.allure) {
-        require('@shelex/cypress-allure-plugin')(on, config);
-      }
     },
     baseUrl: "https://reqres.in/api/",
     // Configure for API testing
