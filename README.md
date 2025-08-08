@@ -2,209 +2,138 @@
 
 This repository is configured for API testing with Cypress using the [ReqRes](https://reqres.in/) API as a test endpoint.
 
+---
+
 ## Configuration
 
-### Cypress Configuration (`cypress.config.js`)
-- Base URL: `https://reqres.in/api/`
-- Increased timeouts for API calls
-- Environment variables for API base URL
+- **Cypress config**: `cypress.config.js`
+  - Base URL: `https://reqres.in/api/`
+  - Increased timeouts for API calls
+  - Videos/screenshots disabled for API testing
+  - Mochawesome HTML reporting enabled
 
-## Two Approaches for API Testing
+---
 
-### Approach 1: Custom Commands (`cypress/support/commands.js`)
-The following custom commands are available for API testing:
+## Project Structure
 
-- `cy.apiGet(endpoint, options)` - GET requests
-- `cy.apiPost(endpoint, body, options)` - POST requests  
-- `cy.apiPut(endpoint, body, options)` - PUT requests
-- `cy.apiDelete(endpoint, options)` - DELETE requests
-- `cy.validateApiResponse(response, expectedStatus)` - Validate response structure
+```
+cypress/
+├── e2e/                  # Test files
+├── integration/
+│   ├── api/              # Modular API methods (e.g., userApi.js, authApi.js)
+│   └── schemas/          # Modular JSON schemas (e.g., userSchema.js)
+├── support/              # Cypress support files
+├── mochawesome-report/   # Generated HTML reports
+└── cypress.config.js     # Cypress configuration
+```
 
-### Approach 2: Utility Methods (`cypress/support/api-utils.js`)
-A class-based approach with utility methods:
+---
 
-- `apiUtils.get(endpoint, options)` - GET requests
-- `apiUtils.post(endpoint, body, options)` - POST requests
-- `apiUtils.put(endpoint, body, options)` - PUT requests
-- `apiUtils.delete(endpoint, options)` - DELETE requests
-- `apiUtils.validateResponse(response, expectedStatus)` - Validate response
-- `apiUtils.validateUserData(user)` - Validate user data structure
-- `apiUtils.validateResponseTime(startTime, maxTime)` - Validate response time
-- `apiUtils.createTestUser(name, job)` - Create test user data
-- `apiUtils.createLoginCredentials(email, password)` - Create login credentials
+## Modular API Methods
 
-## JSON Schema Validation
+API request logic is organized in `cypress/integration/api/`:
 
-### Schema Files (`cypress/fixtures/`)
-The following JSON schema files are available for response validation:
+```js
+// cypress/integration/api/userApi.js
+export const getUser = (userId = 1, options = {}) => {
+  return cy.request({
+    method: 'GET',
+    url: `https://reqres.in/api/users/${userId}`,
+    failOnStatusCode: false,
+    ...options
+  });
+};
+```
 
-- `user.json` - Individual user data structure
-- `users-list.json` - Users list response structure
-- `single-user.json` - Single user response structure
-- `create-user.json` - Create user response structure
-- `login.json` - Login response structure
-- `register.json` - Register response structure
+---
 
-### Schema Validator (`cypress/support/schema-validator.js`)
-Custom utility for JSON schema validation using Ajv:
+## Modular JSON Schemas
 
-- `cy.validateJsonSchema(response, schemaName, testName)` - Custom command for schema validation
-- `schemaValidator.validateData(data, schemaName, testName)` - Validate specific data
-- `schemaValidator.validateResponse(response, schemaName, testName)` - Validate API response
+JSON schemas are organized in `cypress/integration/schemas/` and imported into test files:
 
-## Test Files
+```js
+// cypress/integration/schemas/userSchema.js
+export const userSchema = {
+  type: "object",
+  properties: {
+    id: { type: "integer", minimum: 1 },
+    email: { type: "string", pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$" },
+    first_name: { type: "string", minLength: 1 },
+    last_name: { type: "string", minLength: 1 },
+    avatar: { type: "string", pattern: "^https?://.+" }
+  },
+  required: ["id", "email", "first_name", "last_name", "avatar"],
+  additionalProperties: false
+};
+```
 
-### 1. Simple API Example (`cypress/e2e/simple-api-example.cy.js`)
-Basic examples using standard `cy.request()` method.
+---
 
-### 2. Comprehensive API Testing (`cypress/e2e/api-testing.cy.js`)
-Advanced examples using custom commands approach.
+## Example Test
 
-### 3. Simple Schema Example (`cypress/e2e/simple-schema-example.cy.js`)
-Basic JSON schema validation examples using fixtures.
+```js
+import { userApi } from '../integration/api/index.js';
+import { userSchema } from '../integration/schemas/index.js';
 
-### 4. JSON Schema Validation (`cypress/e2e/json-schema-validation.cy.js`)
-Comprehensive JSON schema validation examples.
+describe('User API', () => {
+  it('should get a user and validate schema', () => {
+    userApi.getUser(1).then((response) => {
+      if (response.status === 200) {
+        expect(response.body.data).to.be.jsonSchema(userSchema);
+      } else if (response.status === 401) {
+        cy.log('API requires authentication - skipping schema validation');
+      }
+    });
+  });
+});
+```
+
+---
 
 ## Running the Tests
 
-### Run all API tests:
+Run all tests:
 ```bash
-npx cypress run --spec "cypress/e2e/*api*.cy.js"
+npx cypress run
 ```
 
-### Run schema validation tests:
+Run a specific test file:
 ```bash
-npx cypress run --spec "cypress/e2e/*schema*.cy.js"
+npx cypress run --spec "cypress/e2e/simple-api-example.cy.js"
 ```
 
-### Run specific test file:
-```bash
-npx cypress run --spec "cypress/e2e/simple-schema-example.cy.js"
-```
-
-### Open Cypress Test Runner:
+Open Cypress Test Runner:
 ```bash
 npx cypress open
 ```
 
-## Example Test Scenarios
+---
 
-### Using Custom Commands:
-```javascript
-describe('User API Tests', () => {
-  it('should create and retrieve a user', () => {
-    const newUser = {
-      name: 'John Doe',
-      job: 'QA Engineer'
-    };
+## Viewing Reports
 
-    cy.apiPost('/users', newUser)
-      .then((response) => {
-        cy.validateApiResponse(response, 201);
-        expect(response.body.name).to.equal(newUser.name);
-      });
-  });
-});
+After running tests, open the Mochawesome HTML report:
+```bash
+open mochawesome-report/report.html
 ```
 
-### Using Utility Methods:
-```javascript
-describe('User API Tests', () => {
-  it('should create and retrieve a user', () => {
-    const newUser = apiUtils.createTestUser('John Doe', 'QA Engineer');
-    
-    apiUtils.post('/users', newUser)
-      .then((response) => {
-        apiUtils.validateResponse(response, 201);
-        expect(response.body.name).to.equal(newUser.name);
-      });
-  });
-});
-```
+---
 
-### Using JSON Schema Validation:
-```javascript
-describe('User API Tests', () => {
-  it('should validate user response against schema', () => {
-    cy.request('GET', 'https://reqres.in/api/users/1')
-      .then((response) => {
-        expect(response.status).to.equal(200);
-        
-        // Validate response against JSON schema
-        cy.validateJsonSchema(response, 'single-user.json', 'User Response');
-      });
-  });
-});
-```
+## CI/CD Integration
 
-## JSON Schema Validation Examples
+- GitHub Actions workflow: `.github/workflows/cypress-api-tests.yml`
+- Generates and uploads Mochawesome HTML reports as artifacts
+- Posts test summaries as PR comments
 
-### Basic Schema Validation:
-```javascript
-// Validate API response against schema
-cy.validateJsonSchema(response, 'user.json', 'User Response');
-```
-
-### Validate Specific Data:
-```javascript
-// Validate user data specifically
-schemaValidator.validateData(
-  response.body.data, 
-  'user.json', 
-  'User Data'
-);
-```
-
-### Validate Multiple Items:
-```javascript
-// Validate each user in a list
-response.body.data.forEach((user, index) => {
-  schemaValidator.validateData(user, 'user.json', `User ${index + 1}`);
-});
-```
-
-## Advantages of JSON Schema Validation
-
-1. **Strict Type Checking**: Ensures data types match expected schema
-2. **Format Validation**: Validates email, URI, date-time formats
-3. **Required Field Validation**: Ensures all required fields are present
-4. **Consistent Validation**: Same validation rules across all tests
-5. **Clear Error Messages**: Detailed error messages for validation failures
-6. **Reusable Schemas**: Schemas can be reused across multiple tests
-7. **API Contract Testing**: Ensures API responses match expected contract
-8. **Fixtures Integration**: Schemas stored in fixtures for easy management
-
-## API Endpoints Used
-
-The tests use the following ReqRes API endpoints:
-- `GET /users` - Get list of users
-- `GET /users/{id}` - Get single user
-- `POST /users` - Create user
-- `PUT /users/{id}` - Update user
-- `DELETE /users/{id}` - Delete user
-- `POST /login` - User login
-- `POST /register` - User registration
+---
 
 ## Best Practices
 
-1. **Choose your approach**: Use custom commands for simple scenarios, utility methods for complex ones
-2. **Use JSON schemas** for consistent response validation
-3. **Store schemas in fixtures** for easy management and reuse
-4. **Validate response structure** and data types
-5. **Test error scenarios** (404, 400, etc.)
-6. **Check response times** for performance
-7. **Validate data formats** (emails, URLs, etc.)
-8. **Use descriptive test names** that explain the scenario
-9. **Group related tests** using `describe` blocks
-10. **Create reusable schemas** for common response patterns
-11. **Combine schema validation** with custom assertions for comprehensive testing
+- Use modular API methods and schemas for maintainability
+- Validate API responses with JSON schemas
+- Handle 401/400/404 gracefully in tests
+- Keep fixtures for test data only (not for schemas or methods)
+- Use Mochawesome for clear, visual reporting
 
-## Troubleshooting
+---
 
-- If tests fail due to network issues, increase the `requestTimeout` in `cypress.config.js`
-- For slow APIs, adjust the `defaultCommandTimeout` setting
-- Use `failOnStatusCode: false` when testing error responses
-- The utility methods approach provides better error messages and debugging information
-- JSON schema validation provides detailed error messages for validation failures
-- Schemas stored in fixtures are automatically loaded by Cypress
+**Happy testing!**
